@@ -1,5 +1,5 @@
-pandas,
-sqlalchemy,
-requests,
-psycopg2-binary,
+pandas
+sqlalchemy
+requests
+psycopg2-binary
 chardet

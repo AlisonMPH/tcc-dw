@@ -1,0 +1,13 @@
+{
+    "environment": "dev",
+    "dev": {
+        "base_url": "https://portaldatransparencia.gov.br/download-de-dados/despesas-execucao/",
+        "download_dir": "C:\\GIT\\ETL\\DOWNLOAD\\",
+        "database_url": "postgresql://usuario:senha@localhost:5432/nome_do_banco_prod"
+    },
+    "prod": {
+        "base_url": "https://portaldatransparencia.gov.br/download-de-dados/despesas-execucao/",
+        "download_dir": "C:\\GIT\\ETL\\DOWNLOAD\\",
+        "database_url": "postgresql://usuario:senha@localhost:5432/nome_do_banco_prod"
+    }
+}

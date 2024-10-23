@@ -9,7 +9,7 @@ import zipfile
 import chardet
 
 # Diretório para logs
-log_dir = r'C:\\GIT\\ETL'
+log_dir = r'C:\\git\\tcc-dw'
 if not os.path.exists(log_dir):
     os.makedirs(log_dir)
 
@@ -64,6 +64,16 @@ def baixar_dados(urls, download_dir):
             # Define o nome do arquivo ZIP a ser salvo
             nome_arquivo_zip = os.path.join(download_dir, url.split("/")[-1])
 
+            # Extrai ano e mês do nome do arquivo ZIP para criar o nome final
+            nome_base = os.path.splitext(os.path.basename(nome_arquivo_zip))[0]  # remove a extensão .zip
+            ano_mes = ''.join([char for char in nome_base if char.isdigit()])  # extrai os números (ano e mês)
+            nome_final = f"{ano_mes}_Despesas.csv"
+            
+            # Verifica se o arquivo CSV já existe
+            caminho_final = os.path.join(download_dir, nome_final)
+            if os.path.exists(caminho_final):
+                logging.info(f"O arquivo CSV {nome_final} já existe. Pulando o download.")
+                continue 
             # Verifica se o arquivo já foi baixado
             if os.path.exists(nome_arquivo_zip):
                 logging.info(f"Arquivo já existe: {nome_arquivo_zip}. Pulando download.")
@@ -85,7 +95,7 @@ def baixar_dados(urls, download_dir):
                 zip_ref.extractall(download_dir)
             logging.info(f"Arquivo(s) extraído(s) para: {download_dir}")
 
-            # Opcional: Remove o arquivo ZIP após a extração
+            # Remove o arquivo ZIP após a extração
             os.remove(nome_arquivo_zip)
             logging.info(f"Arquivo ZIP removido: {nome_arquivo_zip}")
 
@@ -105,8 +115,10 @@ def transformar_dados(download_dir):
             caminho_arquivo = os.path.join(download_dir, arquivo)
             try:
                 # Detectar a codificação do arquivo
-                codificacao = detectar_codificacao(caminho_arquivo)
-                df = pd.read_csv(caminho_arquivo, encoding=codificacao)
+                #codificacao = detectar_codificacao(caminho_arquivo)
+                #df = pd.read_csv(caminho_arquivo, encoding=codificacao)
+                #df = pd.read_csv(os.path.join(download_dir, arquivo), encoding='ISO-8859-1')
+                df = pd.read_csv(os.path.join(download_dir, arquivo), encoding='ISO-8859-1', delimiter=';', on_bad_lines='skip')
                 dataframes.append(df)
             except Exception as e:
                 logging.error(f"Erro ao ler o arquivo {arquivo}: {e}")
@@ -123,7 +135,7 @@ def etl(inicio_ano=2022, fim_ano=datetime.now().year):
     criar_diretorio(download_dir)
     urls = extrair_dados(inicio_ano, fim_ano)
     baixar_dados(urls, download_dir)
-    df = transformar_dados()
+    df = transformar_dados(download_dir)
     carregar_dados(df)
 
 # Executa o ETL

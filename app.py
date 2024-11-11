@@ -46,7 +46,6 @@ def get_data_from_database(ano, orgaosuperior, orgaosubordinado, unidadegestora,
 st.title('Dashboard de Gastos Federais')
 
 # Filtros Interativos - Organizando os filtros
-# Linha 1: Ano e Tipo de Filtro
 col1, col2 = st.columns([1, 2])  # Ajustar a largura das colunas para Ano e Tipo de Filtro
 
 with col1:
@@ -56,8 +55,8 @@ with col2:
     filter_options = ['Órgão Superior', 'Órgão Subordinado', 'Unidade Gestora']
     selected_filter = st.selectbox('Selecione o tipo de filtro', filter_options)
 
-# Linha 2: Filtro de Unidade Gestora ou Órgão Subordinado ou Órgão Superior
-col3 = st.columns(1)[0]  # Uma coluna para o filtro correspondente
+#Filtro de Unidade Gestora ou Órgão Subordinado ou Órgão Superior
+col3 = st.columns(1)[0] 
 with col3:
     if selected_filter == 'Unidade Gestora':
         unidadegestora = st.selectbox('Selecione a Unidade Gestora', dim_unidadegestora['nome_unidadegestora'].unique())
@@ -72,8 +71,8 @@ with col3:
         orgaosubordinado = 'Todos'
         unidadegestora = 'Todos'
 
-# Linha 3: Modalidade de Despesa
-col4 = st.columns(1)[0]  # Uma coluna para a Modalidade de Despesa
+#Modalidade de Despesa
+col4 = st.columns(1)[0] 
 with col4:
     modalidade = st.selectbox('Selecione a Modalidade de Despesa', dim_modalidadedespesa['nome_modalidadedespesa'].unique())
 
